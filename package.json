@@ -1,0 +1,27 @@
+{
+  "version": "0.0.1",
+  "description": "old-driver",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:xuzicn/old-driver.git"
+  },
+  "author": "zilong.xu",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "chalk": "^1.1.3",
+    "express": "^4.13.4",
+    "mysql": "^2.10.2",
+    "squel": "^5.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "request": "^2.70.0"
+  }
+}
