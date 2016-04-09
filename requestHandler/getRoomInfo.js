@@ -13,7 +13,7 @@ function paraller(bookings) {
 	if (!bookings || !Array.isArray(bookings) || bookings.length == 0) return undefined;
 	
 	// 填充从每天工作开始时间到结束时间的小时数字
-	var freeTime = [];
+	var orderedTime = [];
 
 	// 剔除已预订的小时
 	const hourStep = 3600000;
@@ -21,7 +21,7 @@ function paraller(bookings) {
 		var cursor = booking.from;
 		const end = booking.to;
 		while (cursor < end) {
-			freeTime.push(new Date(cursor).getHour());
+			orderedTime.push(new Date(cursor).getHour());
 			cursor += hourStep;
 		};
 	});
@@ -31,7 +31,7 @@ function paraller(bookings) {
 		roomSize: bookings[0].roomSize,
 		roomDevice: bookings[0].roomDevice,
 		time: { begin: workingHours.from, end: workingHours.to },
-		freeTime: freeTime
+		orderedTime: orderedTime
 	};
 }
 
