@@ -64,7 +64,7 @@ module.exports = function (app) {
 							toTime: Number.parseInt(b.toTime),
 							meetingRoomId: Number.parseInt(b.meetingRoomId),
 							comment: b.comment,
-							attendees: b.attendees.split(','),
+							attendees: b.attendees ? b.attendees : '',
 							orderTime: Number.parseInt(b.orderTime)
 						};
 					});
