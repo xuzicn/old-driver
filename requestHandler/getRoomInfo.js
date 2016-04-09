@@ -39,7 +39,7 @@ function paraller(bookings) {
 		roomName: bookings[0].roomName,
 		roomSize: bookings[0].roomSize,
 		roomDevice: bookings[0].roomDevice,
-		time: { begin: workingHours.from, to:  workingHours.to },
+		time: { begin: workingHours.from, end: workingHours.to },
 		orderedTime: orderedTime
 	};
 }
