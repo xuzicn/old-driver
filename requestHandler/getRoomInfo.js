@@ -9,6 +9,19 @@ const doesScopes = require('../lib/doesScopes')
 const fs = require('fs');
 const path = require('path');
 
+function kkk(hours, from, to) {
+	var fromHour = new Date(from).getHours(),
+		toHour = new Date(to).getHours();
+
+ 	console.log('aaa', fromHour, toHour, from, to);
+	for (var i = fromHour; i < toHour; i++) {
+		if (hours.indexOf(i) == -1 && i >= workingHours.from && i < workingHours.to) {
+			hours.push(i);
+		}
+	}
+	return hours;
+}
+
 function paraller(bookings) {
 	if (!bookings || !Array.isArray(bookings) || bookings.length == 0) return undefined;
 	
@@ -18,12 +31,7 @@ function paraller(bookings) {
 	// 剔除已预订的小时
 	const hourStep = 3600000;
 	bookings.forEach(function (booking) {
-		var cursor = booking.from;
-		const end = booking.to;
-		while (cursor < end) {
-			orderedTime.push(new Date(cursor).getHour());
-			cursor += hourStep;
-		};
+		kkk(orderedTime, Number.parseInt(booking.from), Number.parseInt(booking.end));
 	});
 
 	return {
