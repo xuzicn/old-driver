@@ -49,7 +49,7 @@ module.exports = function (app) {
 		var dbc = connection.connect();
 		new Promise(function (resolve, reject) {
 			dbc.select({
-				text: 'select Booking.*,MR.name roomName FROM Booking LEFT JOIN meetingRoom MR ON MR.id=Booking.meetingRoomId'
+				text: 'select Booking.*,MR.roomName FROM Booking LEFT JOIN MeetingRoom MR ON MR.id=Booking.meetingRoomId'
 			}).result(function (e, result) {
 				if (!!e) {
 					responseError(res, e.message);
@@ -58,7 +58,7 @@ module.exports = function (app) {
 					allBookings = result.map(function (b) {
 						return {
 							id: Number.parseInt(b.id),
-							roomName: b.roomName
+							roomName: b.roomName,
 							bookerId: Number.parseInt(b.bookerid),
 							fromTime: Number.parseInt(b.fromTime),
 							toTime: Number.parseInt(b.toTime),
@@ -72,7 +72,7 @@ module.exports = function (app) {
 				}
 			});
 		}).then(function () {
-			return new Promise(resolve, reject) {
+			return new Promise(function (resolve, reject) {
 				dbc.select({
 					text: 'select * from User'
 				}).result(function(e, result) {
@@ -83,14 +83,14 @@ module.exports = function (app) {
 						allUsers = result.map(function (b) {
 							return {
 								id: Number.parseInt(b.id),
-								name: b.name
+								name: b.name,
 								openId: b.openId
 							};
 						});
 						resolve();
 					}
 				})
-			}
+			});
 		}).then(function () {
 			var newMeetings = [], recentMeetings = [], 
 				now = new Date().valueOf(),
@@ -102,7 +102,7 @@ module.exports = function (app) {
 				var bookerOpenId=allUsers.filter(function(u) {
 					return u.id = booking.bookerId
 				})[0].openId;
-				var attendees = [booking.attendees + ',' + bookerOpenId].split(',');
+				var attendees = (booking.attendees + ',' + bookerOpenId).split(',');
 				booking.attendeeOpenIds = attendees;
 
 				if (booking.orderTime >= newMeetingsThr) {
