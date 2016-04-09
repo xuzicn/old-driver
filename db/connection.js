@@ -38,10 +38,40 @@ Connection.prototype.result = function(fn) {
 			console.log(e);
 			console.log(e.stack)
 		}
+	}).catch(function (e) {
+		console.log(e.stack);
+		return Promise.reject(e);
 	});
 	return this;
 }
 
+Connection.prototype.insert = function (command) {
+	var me = this,
+		sql = command, 
+		statements = [];
+	if (typeof command === 'object') {
+		sql = command.text;
+		statements = command.values;
+	}
+	console.log(chalk.green(`running sql command '${sql}'. arguments: `), statements);
+	this._temporary.chain = this._temporary.chain.then(function () {
+		return new Promise(function (resolve, reject) {
+			me._client.query(sql, statements, function (err, results) {
+				if (!!err) {
+					console.log(chalk.red(`Fail to run sql command. ${err.message}.`));
+				}
+				console.log(chalk.red(JSON.stringify(results)))
+				me._temporary.result = {
+					err: err,
+					results: results,
+					fields: []
+				}
+				resolve();
+			});
+		})
+	});
+	return this;
+}
 
 Connection.prototype.select = function (command) {
 	var me = this,
