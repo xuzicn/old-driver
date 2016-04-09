@@ -64,8 +64,8 @@ module.exports = function (app) {
 
     app.get('/getBooking', (req, res) => {
         if (!validateQuery(req.query, res, {
-                id: '未指定id'
-            })) return;
+            id: '未指定id'
+        })) return;
 
         connection.connect().select({
             text: `
@@ -85,4 +85,23 @@ module.exports = function (app) {
             }
         }).disconnect();
     });
+    
+    app.post('/removeBooking', (req, res) => {
+        if (!validateQuery(req.body, res, {
+            id: '未指定id'
+        })) return;
+        
+        connection.connect().select({
+            text: `DELETE FROM Booking B WHERE id=?`,
+            values: [
+                getValue(req.body, 'id', 'string', 0)
+            ]
+        }).result(function(e, result) {
+            if (e) {
+                responseError(res, e.message);
+            } else {
+                responseData(res, result);
+            }
+        }).disconnect();
+    })
 };
