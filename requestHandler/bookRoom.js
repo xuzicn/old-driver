@@ -46,7 +46,7 @@ module.exports = function (app) {
 
         connection.connect().select({
             text: `
-                SELECT * FROM Booking B 
+                SELECT B.id, address, comment, fromTime, toTime, roomName, roomSize FROM Booking B 
                 LEFT JOIN User U ON B.bookerid=U.id
                 LEFT JOIN MeetingRoom MR ON MR.id=B.meetingRoomId
                 WHERE U.openid=?`,
@@ -69,12 +69,11 @@ module.exports = function (app) {
 
         connection.connect().select({
             text: `
-                SELECT * FROM Booking B 
+                SELECT B.id, attendees, comment, fromTime, toTime, roomName FROM Booking B 
                 LEFT JOIN User U ON B.bookerid=U.id
                 LEFT JOIN MeetingRoom MR ON MR.id=B.meetingRoomId
-                WHERE U.openid=? AND B.id=?`,
+                WHERE B.id=?`,
             values: [
-                getValue(req.query, 'openId', 'string', 0),
                 getValue(req.query, 'id', 'string', 0)
             ]
         }).result(function(e, result) {
@@ -92,7 +91,7 @@ module.exports = function (app) {
         })) return;
         
         connection.connect().select({
-            text: `DELETE FROM Booking B WHERE id=?`,
+            text: `DELETE FROM Booking WHERE id=?`,
             values: [
                 getValue(req.body, 'id', 'string', 0)
             ]
