@@ -100,9 +100,9 @@ module.exports = function (app) {
 			for (var i = 0, len = allBookings.length; i < len; i++) {
 				var booking = allBookings[i];
 				var bookerOpenId=allUsers.filter(function(u) {
-					return u.id = booking.bookerId
+					return u.id === booking.bookerId
 				})[0].openId;
-				var attendees = (booking.attendees + ',' + bookerOpenId).split(',');
+				var attendees = !booking.attendees ? [bookerOpenId] : (booking.attendees + ',' + bookerOpenId).split(',');
 				booking.attendeeOpenIds = attendees;
 
 				if (booking.orderTime >= newMeetingsThr) {
