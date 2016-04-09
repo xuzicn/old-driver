@@ -19,6 +19,8 @@ const url = require('url');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use('/meeting', express.static(path.join(__dirname, "web")));
+
 require('./requestHandler/getBaseInfo')(app);
 require('./requestHandler/getRoomInfo')(app);
 require('./requestHandler/userInfo')(app);
