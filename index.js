@@ -24,6 +24,7 @@ require('./requestHandler/getRoomInfo')(app);
 require('./requestHandler/userInfo')(app);
 require('./requestHandler/bindUser')(app);
 require('./requestHandler/bookRoom')(app);
+require('./requestHandler/getMessages')(app);
 
 // function responseDbQuery(res, e, result, fields, dataConstructFn) {
 //     res.set('Content-Type', 'application/json');
