@@ -134,11 +134,7 @@ module.exports = function (app) {
 			to: getValue(req.query, 'to', 'int', 0)
 		}).then(function(rooms) {
 			dbc.disconnect();
-			responseData(res, {
-				sites: [],
-				time: { begin: workingHours.from, end: workingHours.to },
-				roomList: rooms
-			});
+			responseData(res, rooms);
 		}).catch(function() {
 	    	dbc.disconnect();
 	    	console.log(e.stack);
