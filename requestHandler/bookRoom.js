@@ -38,4 +38,70 @@ module.exports = function (app) {
 			}
 		}).disconnect();
 	});
+
+	app.get('/getBookingList', (req, res) => {
+        if (!validateQuery(req.query, res, {
+            openId: '未指定openId'
+        })) return;
+
+        connection.connect().select({
+            text: `
+                SELECT * FROM Booking B 
+                LEFT JOIN User U ON B.bookerid=U.id
+                LEFT JOIN MeetingRoom MR ON MR.id=B.meetingRoomId
+                WHERE U.openid=?`,
+            values: [
+                getValue(req.query, 'openId', 'string', 0)
+            ]
+        }).result(function(e, result) {
+            if (e) {
+                responseError(res, e.message);
+            } else {
+                responseData(res, result);
+            }
+        }).disconnect();
+    });
+
+    app.get('/getBooking', (req, res) => {
+        if (!validateQuery(req.query, res, {
+            id: '未指定id'
+        })) return;
+
+        connection.connect().select({
+            text: `
+                SELECT * FROM Booking B 
+                LEFT JOIN User U ON B.bookerid=U.id
+                LEFT JOIN MeetingRoom MR ON MR.id=B.meetingRoomId
+                WHERE U.openid=? AND B.id=?`,
+            values: [
+                getValue(req.query, 'openId', 'string', 0),
+                getValue(req.query, 'id', 'string', 0)
+            ]
+        }).result(function(e, result) {
+            if (e || !result.length) {
+                responseError(res, e ? e.message : '未查到会议室预定信息');
+            } else {
+                responseData(res, result[0]);
+            }
+        }).disconnect();
+    });
+    
+    app.post('/removeBooking', (req, res) => {
+        if (!validateQuery(req.body, res, {
+            id: '未指定id'
+        })) return;
+        
+        connection.connect().select({
+            text: `DELETE FROM Booking B WHERE id=?`,
+            values: [
+                getValue(req.body, 'id', 'string', 0)
+            ]
+        }).result(function(e, result) {
+            if (e) {
+                responseError(res, e.message);
+            } else {
+                responseData(res, result);
+            }
+        }).disconnect();
+    })
 };
