@@ -1,3 +1,5 @@
+global.workingHours = { from: 8, to: 20 };
+
 const connection = require('./db/connection.js');
 const express = require('express');
 const path = require('path');

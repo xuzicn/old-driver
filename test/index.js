@@ -1,5 +1,3 @@
-global.workingHours = { from: 8, to: 20 };
-
 const Mocha = require('mocha');
 const fs = require('fs');
 const path = require('path');
