@@ -44,8 +44,8 @@ module.exports = function (app) {
 
 		const roomId = getValue(req.query, 'roomId', 'int', 0);
 		const date = getValue(req.query, 'date', 'string', '').split('-');
-		const from = new Date(Number.parseInt(date[0]), Number.parseInt(date[1]-1), Number.parseInt(2), workingHours.from).valueOf();
-		const to = new Date(Number.parseInt(date[0]), Number.parseInt(date[1]-1), Number.parseInt(2), workingHours.to).valueOf();
+		const from = new Date(Number.parseInt(date[0]), Number.parseInt(date[1]-1), Number.parseInt(date[2]), workingHours.from).valueOf();
+		const to = new Date(Number.parseInt(date[0]), Number.parseInt(date[1]-1), Number.parseInt(date[2]), workingHours.to).valueOf();
 
 		connection.connect().select({
 			text: fs.readFileSync(path.join(__dirname, '..', 'db', 'sql', 'getRoomInfo.sql')).toString(),
