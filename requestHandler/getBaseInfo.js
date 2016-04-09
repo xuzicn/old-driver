@@ -51,7 +51,7 @@ function getRooms(dbc, args) {
 	        	roomDic = undefined;
 
 	        	rooms.forEach(function (room) {
-	        		room.avaliable = doesScopes(room.timeSlots).hasGapBetween({ from: args.from, to: args.to });
+	        		room.available = doesScopes(room.timeSlots).hasGapBetween({ from: args.from, to: args.to });
 	        		delete room.timeSlots;
 	        	})
 	        	resolve(rooms);
