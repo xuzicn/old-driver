@@ -21,7 +21,7 @@ describe('#预定会议室', function (argument) {
 				expect(e).to.not.exist;
 				expect(body).to.exist;
 				expect(body.msg).to.not.exist;
-				expect(body.success).to.be.true;
+				expect(body.data.success).to.be.true;
 				expect(body.ret).to.be.true;
 				resolve();
 			});

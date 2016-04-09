@@ -19,15 +19,15 @@ module.exports = function (app) {
 		var attendees = getValue(req.body, 'attendees', 'string', '').split(',');
 
 		connection.connect().insert({
-			text: ['INSERT INTO Booking (bookerId, fromTime, toTime, meetingRoomId, comment, attendees)', 
-			      	'(SELECT u.id, ?, ?, ?, ?, (SELECT GROUP_CONCAT(distinct id) from User WHERE User.openId in (' + [attendees.map(() => '?')].join(',')  + '))',
+			text: ['INSERT INTO Booking (bookerId, fromTime, toTime, meetingRoomId, comment, attendees, orderTime)', 
+			      	'(SELECT u.id, ?, ?, ?, ?, (SELECT GROUP_CONCAT(distinct openId) from User WHERE User.openId in (' + [attendees.map(() => '?')].join(',')  + '), ?)',
 			      	'FROM User u WHERE u.openId=?)'].join(' '),
 			values: [
 				getValue(req.body, 'from', 'int', 0), 
 				getValue(req.body, 'to', 'int', 0), 
 				getValue(req.body, 'roomId', 'int', 0), 
 				getValue(req.body, 'comment', 'string', 0)
-			].concat(attendees).concat([getValue(req.body, 'openId', 'string', 0)])
+			].concat(attendees).concat([new Date().valueOf(), getValue(req.body, 'openId', 'string', 0)])
 		}).result(function (e, result, fields) {
 			if (!!e) {
 				responseError(res, e.message);
