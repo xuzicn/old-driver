@@ -22,7 +22,7 @@ function kkk(hours, from, to) {
 	return hours;
 }
 
-function paraller(bookings) {
+function paraller(bookings, from, to) {
 	if (!bookings || !Array.isArray(bookings) || bookings.length == 0) return undefined;
 	
 	// 填充从每天工作开始时间到结束时间的小时数字
@@ -31,6 +31,7 @@ function paraller(bookings) {
 	// 剔除已预订的小时
 	const hourStep = 3600000;
 	bookings.forEach(function (booking) {
+		if (booking.from <= from || booking.to >= to) return;
 		kkk(orderedTime, Number.parseInt(booking.from), Number.parseInt(booking.end));
 	});
 
@@ -57,12 +58,12 @@ module.exports = function (app) {
 
 		connection.connect().select({
 			text: fs.readFileSync(path.join(__dirname, '..', 'db', 'sql', 'getRoomInfo.sql')).toString(),
-			values: [roomId, from, to, from, to]
+			values: [roomId]
 		}).result(function (e, result, fields) {
 			if (!!e) {
 				responseError(res, e.message);
 			} else {
-				responseData(res, paraller(result));
+				responseData(res, paraller(result, from, to));
 			}
 		}).disconnect();
 	});
