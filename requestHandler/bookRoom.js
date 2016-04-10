@@ -20,7 +20,7 @@ module.exports = function (app) {
 
 		connection.connect().insert({
 			text: ['INSERT INTO Booking (bookerId, fromTime, toTime, meetingRoomId, comment, attendees, orderTime)', 
-			      	'(SELECT u.id, ?, ?, ?, ?, (SELECT GROUP_CONCAT(distinct openId) from User WHERE User.openId in (' + [attendees.map(() => '?')].join(',')  + ')), ?',
+			      	'(SELECT u.id, ?, ?, ?, ?, (SELECT GROUP_CONCAT(distinct openId) from User WHERE User.name in (' + [attendees.map(() => '?')].join(',')  + ')), ?',
 			      	'FROM User u WHERE u.openId=?)'].join(' '),
 			values: [
 				getValue(req.body, 'from', 'int', 0), 
