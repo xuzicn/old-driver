@@ -5,5 +5,4 @@ LEFT JOIN Site S
 LEFT JOIN Booking B
 	   ON MR.id=B.meetingRoomId
     WHERE S.id = ?
-      AND ((B.fromTime >= ? AND B.toTime <= ?) OR B.fromTime is NULL)
  ORDER BY MR.id, B.fromTime

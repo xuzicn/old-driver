@@ -22,7 +22,7 @@ function getRooms(dbc, args) {
 	return new Promise(function (resolve, reject) {
 		dbc.select({
 			text: fs.readFileSync(path.join(__dirname, '..', 'db', 'sql', 'getRooms.sql')).toString(),
-			values: [args.site, args.from, args.to]
+			values: [args.site] //, args.from, args.to]
 		}).result((e, result, fields) => {
 	        if (!!e) {
 	        	reject(e.message);
