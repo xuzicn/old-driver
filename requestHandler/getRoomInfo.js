@@ -29,9 +29,8 @@ function paraller(bookings, from, to) {
 	var orderedTime = [];
 
 	// 剔除已预订的小时
-	const hourStep = 3600000;
 	bookings.forEach(function (booking) {
-		if (booking.from <= from || booking.to >= to) return;
+		if (booking.from < from || booking.to > to) return;
 		kkk(orderedTime, Number.parseInt(booking.from), Number.parseInt(booking.end));
 	});
 
